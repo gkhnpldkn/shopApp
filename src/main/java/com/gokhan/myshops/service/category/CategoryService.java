@@ -45,7 +45,7 @@ public class CategoryService implements ICategoryService {
             oldCategory.setName(category.getName());
             return categoryRepository.save(oldCategory);
         })
-                .orElseThrow(()-> new ResourceNotFoundException("Category Not Found!"));
+                .orElseThrow(()-> new ResourceNotFoundException("Category Not Found!!"));
     }
 
     @Override
