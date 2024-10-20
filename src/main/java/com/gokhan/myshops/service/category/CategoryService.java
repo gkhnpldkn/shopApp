@@ -14,10 +14,11 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class CategoryService implements ICategoryService {
     private ICategoryRepository categoryRepository;
+
     @Override
     public Category getCategoryById(Long id) {
         Category category = categoryRepository.findById(id)
-                .orElseThrow(()-> new ResourceNotFoundException("Category Not Found!"));
+                .orElseThrow(() -> new ResourceNotFoundException("Category Not Found!"));
         return category;
 
     }
@@ -34,24 +35,24 @@ public class CategoryService implements ICategoryService {
 
     @Override
     public Category addCategory(Category category) {
-        return Optional.of(category).filter(c ->!categoryRepository.existByName(c.getName()) )
-                .map(categoryRepository ::save)
-                .orElseThrow(() -> new AlreadyExistException(category.getName()+ " lready exist"));
+        return Optional.of(category).filter(c -> !categoryRepository.existByName(c.getName()))
+                .map(categoryRepository::save)
+                .orElseThrow(() -> new AlreadyExistException(category.getName() + " lready exist"));
     }
 
     @Override
     public Category updateCategory(Category category, Long id) {
-        return Optional.ofNullable(getCategoryById(id)).map(oldCategory->{
-            oldCategory.setName(category.getName());
-            return categoryRepository.save(oldCategory);
-        })
-                .orElseThrow(()-> new ResourceNotFoundException("Category Not Found!!"));
+        return Optional.ofNullable(getCategoryById(id)).map(oldCategory -> {
+                    oldCategory.setName(category.getName());
+                    return categoryRepository.save(oldCategory);
+                })
+                .orElseThrow(() -> new ResourceNotFoundException("Category Not Found!!"));
     }
 
     @Override
     public void deleteCategory(Long id) {
-categoryRepository.findById(id).ifPresentOrElse(categoryRepository::delete, () -> {
-    throw new ResourceNotFoundException("Category Not Found!");
-});
+        categoryRepository.findById(id).ifPresentOrElse(categoryRepository::delete, () -> {
+            throw new ResourceNotFoundException("Category Not Found!");
+        });
     }
 }
